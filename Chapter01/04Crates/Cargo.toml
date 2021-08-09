@@ -1,0 +1,19 @@
+[package]
+edition = "2018"
+name = "our_package"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rsa = "0.5.0"
+rand = "0.8.4"
+base64 = "0.13.0"
+
+[[bin]]
+name = "our_package"
+path = "src/main.rs"
+
+[lib]
+name = "our_package"
+path = "src/lib.rs"
