@@ -126,10 +126,10 @@ fn users(name_grade: NameGrade, filters: Option<Filters>) -> Option<NewUser> {
             }
         })
         .collect();
-    if users.len() > 0 {
-        Some(NewUser(users))
-    } else {
+    if users.is_empty() {
         None
+    } else {
+        Some(NewUser(users))
     }
 }
 

@@ -125,10 +125,10 @@ fn users(name_grade: NameGrade, filters: Option<Filters>) -> Result<NewUser, Sta
             }
         })
         .collect();
-    if users.len() > 0 {
-        Ok(NewUser(users))
-    } else {
+    if users.is_empty() {
         Err(Status::Forbidden)
+    } else {
+        Ok(NewUser(users))
     }
 }
 

@@ -86,14 +86,14 @@ fn users(name_grade: NameGrade, filters: Option<Filters>) -> String {
             }
         })
         .collect();
-    if users.len() > 0 {
+    if users.is_empty() {
+        String::from("No user found")
+    } else{
         users
             .iter()
             .map(|u| format!("{:?}", u))
             .collect::<Vec<String>>()
             .join(",")
-    } else {
-        String::from("No user found")
     }
 }
 
