@@ -1,6 +1,7 @@
 debug/
 target/
 Cargo.lock
+Rocket.toml
 **/*.rs.bk
 *.pdb
 main
