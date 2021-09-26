@@ -1,0 +1,10 @@
+[package]
+edition = "2018"
+name = "chapter4"
+version = "0.1.0"
+
+[dependencies]
+rocket = {path = "../../../rocket/core/lib/"}
+rocket_db_pools = {path = "../../../rocket/contrib/db_pools/lib/", features = ["sqlx_postgres"]}
+sqlx = {version = "0.5.7", features = ["postgres", "uuid", "runtime-tokio-rustls"]}
+uuid = {version = "0.8.2", features = ["v4"]}

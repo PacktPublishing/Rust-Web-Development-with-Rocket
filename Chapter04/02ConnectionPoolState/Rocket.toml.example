@@ -1,0 +1,6 @@
+[default]
+
+[debug]
+database_url = "postgres://username:password@localhost/rocket"
+
+[release]
