@@ -139,12 +139,12 @@ async fn favicon() -> NamedFile {
 
 #[catch(404)]
 fn not_found(req: &Request) -> String {
-    format!("There's no page {}.", req.uri())
+    format!("We cannot find this page {}.", req.uri())
 }
 
 #[catch(403)]
 fn forbidden(req: &Request) -> String {
-    format!("We don't know how to handle this request {}.", req.uri())
+    format!("Access forbidden {}.", req.uri())
 }
 
 #[launch]
