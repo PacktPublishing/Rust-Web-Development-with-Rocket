@@ -1,4 +1,4 @@
-use rocket_db_pools::{sqlx::PgPool, Connection, Database};
+use rocket_db_pools::{sqlx::PgPool, Database};
 
 #[derive(Database)]
 #[database("main_connection")]

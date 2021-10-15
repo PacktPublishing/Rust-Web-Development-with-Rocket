@@ -18,11 +18,11 @@ use uuid::Uuid;
 struct OurDateTime(DateTime<Utc>);
 #[rocket::async_trait]
 impl<'r> FromFormField<'r> for OurDateTime {
-    fn from_value(field: ValueField<'r>) -> form::Result<'r, Self> {
+    fn from_value(_: ValueField<'r>) -> form::Result<'r, Self> {
         todo!("will implement later")
     }
 
-    async fn from_data(field: DataField<'r, '_>) -> form::Result<'r, Self> {
+    async fn from_data(_: DataField<'r, '_>) -> form::Result<'r, Self> {
         todo!("will implement later")
     }
 }
@@ -42,7 +42,7 @@ enum UserStatus {
 
 #[derive(Debug, FromRow, FromForm)]
 struct User {
-    uuid: Uuid,
+    _uuid: Uuid,
     username: String,
     email: String,
     password_hash: Vec<u8>,
@@ -62,8 +62,8 @@ enum PostType {
 
 #[derive(FromForm)]
 struct Post<'r> {
-    uuid: Uuid,
-    user_uuid: Uuid,
+    _uuid: Uuid,
+    _user_uuid: Uuid,
     post_type: PostType,
     content: String,
     upload_data: TempFile<'r>,
@@ -100,98 +100,106 @@ type HtmlResponse = Result<RawHtml<String>, Status>;
 #[database("main_connection")]
 struct DBConnection(PgPool);
 
-#[get("/users/<uuid>", format = "text/html")]
-async fn get_user(mut db: Connection<DBConnection>, uuid: &str) -> HtmlResponse {
+#[get("/users/<_uuid>", format = "text/html")]
+async fn get_user(mut _db: Connection<DBConnection>, _uuid: &str) -> HtmlResponse {
     todo!("will implement later")
 }
 
-#[get("/users?<pagination>", format = "text/html")]
+#[get("/users?<_pagination>", format = "text/html")]
 async fn get_users(
-    mut db: Connection<DBConnection>,
-    pagination: Option<Pagination>,
+    mut _db: Connection<DBConnection>,
+    _pagination: Option<Pagination>,
 ) -> HtmlResponse {
     todo!("will implement later")
 }
 
 #[get("/users/new", format = "text/html")]
-async fn new_user(mut db: Connection<DBConnection>) -> HtmlResponse {
+async fn new_user(mut _db: Connection<DBConnection>) -> HtmlResponse {
     todo!("will implement later")
 }
 
-#[post("/users", format = "text/html", data = "<user>")]
-async fn create_user(mut db: Connection<DBConnection>, user: Form<User>) -> HtmlResponse {
+#[post("/users", format = "text/html", data = "<_user>")]
+async fn create_user(mut _db: Connection<DBConnection>, _user: Form<User>) -> HtmlResponse {
     todo!("will implement later")
 }
 
-#[get("/users/edit/<uuid>", format = "text/html", rank = 1)]
-async fn edit_user(mut db: Connection<DBConnection>, uuid: &str) -> HtmlResponse {
+#[get("/users/edit/<_uuid>", format = "text/html", rank = 1)]
+async fn edit_user(mut _db: Connection<DBConnection>, _uuid: &str) -> HtmlResponse {
     todo!("will implement later")
 }
 
-#[put("/users/<uuid>", format = "text/html", data = "<user>")]
-async fn put_user(mut db: Connection<DBConnection>, uuid: &str, user: Form<User>) -> HtmlResponse {
+#[put("/users/<_uuid>", format = "text/html", data = "<_user>")]
+async fn put_user(
+    mut _db: Connection<DBConnection>,
+    _uuid: &str,
+    _user: Form<User>,
+) -> HtmlResponse {
     todo!("will implement later")
 }
 
-#[patch("/users/<uuid>", format = "text/html", data = "<user>")]
+#[patch("/users/<_uuid>", format = "text/html", data = "<_user>")]
 async fn patch_user(
-    mut db: Connection<DBConnection>,
-    uuid: &str,
-    user: Form<User>,
+    mut _db: Connection<DBConnection>,
+    _uuid: &str,
+    _user: Form<User>,
 ) -> HtmlResponse {
     todo!("will implement later")
 }
 
-#[delete("/users/<uuid>", format = "text/html")]
-async fn delete_user(mut db: Connection<DBConnection>, uuid: &str) -> HtmlResponse {
+#[delete("/users/<_uuid>", format = "text/html")]
+async fn delete_user(mut _db: Connection<DBConnection>, _uuid: &str) -> HtmlResponse {
     todo!("will implement later")
 }
 
-#[get("/users/<user_uuid>/posts/<uuid>", format = "text/html")]
-async fn get_post(mut db: Connection<DBConnection>, user_uuid: &str, uuid: &str) -> HtmlResponse {
+#[get("/users/<_user_uuid>/posts/<_uuid>", format = "text/html")]
+async fn get_post(
+    mut _db: Connection<DBConnection>,
+    _user_uuid: &str,
+    _uuid: &str,
+) -> HtmlResponse {
     todo!("will implement later")
 }
 
-#[get("/users/<user_uuid>/posts", format = "text/html", rank = 2)]
-async fn get_posts(mut db: Connection<DBConnection>, user_uuid: &str) -> HtmlResponse {
+#[get("/users/<_user_uuid>/posts", format = "text/html", rank = 2)]
+async fn get_posts(mut _db: Connection<DBConnection>, _user_uuid: &str) -> HtmlResponse {
     todo!("will implement later")
 }
 
-#[post("/users/<user_uuid>/posts", format = "text/html", data = "<upload>")]
+#[post("/users/<_user_uuid>/posts", format = "text/html", data = "<_upload>")]
 async fn create_post<'r>(
-    mut db: Connection<DBConnection>,
-    user_uuid: &str,
-    upload: Form<Post<'r>>,
+    mut _db: Connection<DBConnection>,
+    _user_uuid: &str,
+    _upload: Form<Post<'r>>,
 ) -> HtmlResponse {
     todo!("will implement later")
 }
 
-#[post("/users/<user_uuid>/posts/<uuid>", format = "text/html")]
+#[post("/users/<_user_uuid>/posts/<_uuid>", format = "text/html")]
 async fn delete_post<'r>(
-    mut db: Connection<DBConnection>,
-    user_uuid: &str,
-    uuid: &str,
+    mut _db: Connection<DBConnection>,
+    _user_uuid: &str,
+    _uuid: &str,
 ) -> HtmlResponse {
     todo!("will implement later")
 }
 
-#[get("/<filename>")]
-async fn assets(filename: &str) -> NamedFile {
+#[get("/<_filename>")]
+async fn assets(_filename: &str) -> NamedFile {
     todo!("will implement later")
 }
 
 #[catch(404)]
-fn not_found(req: &Request) -> RawHtml<String> {
+fn not_found(_: &Request) -> RawHtml<String> {
     todo!("will implement later")
 }
 
 #[catch(422)]
-fn unprocessable_entity(req: &Request) -> RawHtml<String> {
+fn unprocessable_entity(_: &Request) -> RawHtml<String> {
     todo!("will implement later")
 }
 
 #[catch(500)]
-fn internal_server_error(req: &Request) -> RawHtml<String> {
+fn internal_server_error(_: &Request) -> RawHtml<String> {
     todo!("will implement later")
 }
 

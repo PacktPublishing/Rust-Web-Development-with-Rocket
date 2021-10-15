@@ -6,11 +6,11 @@ use rocket_db_pools::sqlx::FromRow;
 pub struct OurDateTime(DateTime<Utc>);
 #[rocket::async_trait]
 impl<'r> FromFormField<'r> for OurDateTime {
-    fn from_value(field: ValueField<'r>) -> form::Result<'r, Self> {
+    fn from_value(_: ValueField<'r>) -> form::Result<'r, Self> {
         todo!("will implement later")
     }
 
-    async fn from_data(field: DataField<'r, '_>) -> form::Result<'r, Self> {
+    async fn from_data(_: DataField<'r, '_>) -> form::Result<'r, Self> {
         todo!("will implement later")
     }
 }
