@@ -25,17 +25,44 @@ pub async fn get_user(db: Connection<DBConnection>, uuid: &str) -> HtmlResponse 
     ))
 }
 
-#[get("/users?<_pagination>", format = "text/html")]
+#[get("/users?<pagination>", format = "text/html")]
 pub async fn get_users(
-    mut _db: Connection<DBConnection>,
-    _pagination: Option<Pagination>,
+    db: Connection<DBConnection>,
+    pagination: Option<Pagination>,
 ) -> HtmlResponse {
-    todo!("will implement later")
+    let users = User::find_all(db, pagination)
+        .await
+        .map_err(|_| Status::NotFound)?;
+    let mut html_string: Vec<String> = Vec::new();
+    html_string.push(USER_HTML_PREFIX.to_string());
+    let users_iter = users.iter();
+    for user in users_iter {
+        html_string.push(user.to_html_string());
+    }
+    html_string.push(USER_HTML_SUFFIX.to_string());
+    Ok(RawHtml(html_string.join("")))
 }
 
 #[get("/users/new", format = "text/html")]
 pub async fn new_user(mut _db: Connection<DBConnection>) -> HtmlResponse {
-    todo!("will implement later")
+    Ok(RawHtml(
+        [
+            USER_HTML_PREFIX,
+            r#"<form accept-charset="UTF-8" action="/users" autocomplete="off" method="POST">
+    <div>
+        <label for="username">Username:</label>
+        <input name="username" type="text"/>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input name="email" type="email"/>
+    </div>
+    <button type="submit" value="Submit">Submit</button>
+</form>"#,
+            USER_HTML_SUFFIX,
+        ]
+        .join(""),
+    ))
 }
 
 #[post("/users", format = "text/html", data = "<_user>")]

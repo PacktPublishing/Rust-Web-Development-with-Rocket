@@ -1,4 +1,5 @@
 use super::our_date_time::OurDateTime;
+use super::pagination::Pagination;
 use super::user_status::UserStatus;
 use crate::fairings::db::DBConnection;
 use rocket::form::FromForm;
@@ -25,13 +26,27 @@ impl User {
         uuid: &str,
     ) -> Result<Self, Box<dyn Error>> {
         let parsed_uuid = Uuid::parse_str(uuid)?;
-        Ok(sqlx::query_as!(
-            Self,
-            r#"SELECT users.uuid, users.username, users.email, users.password_hash, users.description, status as "status: UserStatus", created_at as "created_at: OurDateTime", updated_at as "updated_at: OurDateTime" FROM users WHERE uuid = $1"#,
-            parsed_uuid
-        )
-        .fetch_one(&mut *db)
-        .await?)
+        let query_str = format!("SELECT * FROM users WHERE uuid = $1");
+        Ok(sqlx::query_as::<_, Self>(&query_str)
+            .bind(parsed_uuid)
+            .fetch_one(&mut *db)
+            .await?)
+    }
+
+    pub async fn find_all(
+        mut db: Connection<DBConnection>,
+        pagination: Option<Pagination>,
+    ) -> Result<Vec<Self>, Box<dyn Error>> {
+        let mut query_str = String::from("SELECT * FROM users");
+        if pagination.is_some() {
+            query_str.push_str(" WHERE created_at < $1");
+        }
+        query_str.push_str(" ORDER BY created_at DESC");
+        if pagination.is_some() {
+            query_str.push_str(&format!(" LIMIT {}", pagination.unwrap().limit));
+        }
+        let query = sqlx::query_as::<_, Self>(&query_str);
+        Ok(query.fetch_all(&mut *db).await?)
     }
 
     pub fn to_html_string(&self) -> String {
