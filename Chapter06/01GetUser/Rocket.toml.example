@@ -1,0 +1,8 @@
+[default]
+
+[debug]
+
+[debug.databases.main_connection]
+url = "postgres://username:password@localhost/rocket"
+
+[release]
