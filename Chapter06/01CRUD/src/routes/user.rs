@@ -1,6 +1,9 @@
 use super::HtmlResponse;
 use crate::fairings::db::DBConnection;
-use crate::models::{pagination::Pagination, user::User};
+use crate::models::{
+    pagination::Pagination,
+    user::{NewUser, User},
+};
 use rocket::form::Form;
 use rocket::http::Status;
 use rocket::response::content::RawHtml;
@@ -57,6 +60,18 @@ pub async fn new_user(mut _db: Connection<DBConnection>) -> HtmlResponse {
         <label for="email">Email:</label>
         <input name="email" type="email"/>
     </div>
+    <div>
+        <label for="password">Password:</label>
+        <input name="password" type="password"/>
+    </div>
+    <div>
+        <label for="password_confirmation">Confirm password:</label>
+        <input name="password_confirmation" type="password"/>
+    </div>
+    <div>
+        <label for="description">Tell us a little bit about yourself:</label>
+        <textarea name="description"></textarea>
+    </div>
     <button type="submit" value="Submit">Submit</button>
 </form>"#,
             USER_HTML_SUFFIX,
@@ -65,9 +80,24 @@ pub async fn new_user(mut _db: Connection<DBConnection>) -> HtmlResponse {
     ))
 }
 
-#[post("/users", format = "text/html", data = "<_user>")]
-pub async fn create_user(mut _db: Connection<DBConnection>, _user: Form<User>) -> HtmlResponse {
-    todo!("will implement later")
+#[post(
+    "/users",
+    format = "application/x-www-form-urlencoded",
+    data = "<new_user>"
+)]
+pub async fn create_user<'r>(
+    db: Connection<DBConnection>,
+    new_user: Form<NewUser<'r>>,
+) -> HtmlResponse {
+    println!("------------------------------------- {:?}", new_user);
+    Ok(RawHtml(
+        [
+            USER_HTML_PREFIX.to_string(),
+            format!("{:?}", new_user),
+            USER_HTML_SUFFIX.to_string(),
+        ]
+        .join(""),
+    ))
 }
 
 #[get("/users/edit/<_uuid>", format = "text/html")]

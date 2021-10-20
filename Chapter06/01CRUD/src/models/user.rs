@@ -70,3 +70,15 @@ impl User {
         )
     }
 }
+
+#[derive(Debug, FromForm)]
+pub struct NewUser<'r> {
+    pub username: &'r str,
+    pub email: &'r str,
+    pub password: &'r str,
+    #[field(validate = eq(self.password))]
+    #[field(validate = omits("no"))]
+    pub password_confirmation: &'r str,
+    #[field(default = "Hello, I'm still figuring out my bio...")]
+    pub description: Option<&'r str>,
+}
