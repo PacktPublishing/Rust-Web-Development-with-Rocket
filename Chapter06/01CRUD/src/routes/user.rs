@@ -1,12 +1,13 @@
-use super::HtmlResponse;
+use super::{HtmlResponse, RedirectResponse};
 use crate::fairings::db::DBConnection;
 use crate::models::{
     pagination::Pagination,
     user::{NewUser, User},
 };
-use rocket::form::Form;
+use rocket::form::{Contextual, Form};
 use rocket::http::Status;
-use rocket::response::content::RawHtml;
+use rocket::request::FlashMessage;
+use rocket::response::{content::RawHtml, Flash, Redirect};
 use rocket_db_pools::Connection;
 
 const USER_HTML_PREFIX: &str = r#"<!DOCTYPE html>
@@ -36,22 +37,23 @@ pub async fn get_users(
     let users = User::find_all(db, pagination)
         .await
         .map_err(|_| Status::NotFound)?;
-    let mut html_string: Vec<String> = Vec::new();
-    html_string.push(USER_HTML_PREFIX.to_string());
+    let mut html_string = String::from(USER_HTML_PREFIX);
     let users_iter = users.iter();
     for user in users_iter {
-        html_string.push(user.to_html_string());
+        html_string.push_str(&user.to_html_string());
     }
-    html_string.push(USER_HTML_SUFFIX.to_string());
-    Ok(RawHtml(html_string.join("")))
+    html_string.push_str(USER_HTML_SUFFIX);
+    Ok(RawHtml(html_string))
 }
 
 #[get("/users/new", format = "text/html")]
-pub async fn new_user(mut _db: Connection<DBConnection>) -> HtmlResponse {
-    Ok(RawHtml(
-        [
-            USER_HTML_PREFIX,
-            r#"<form accept-charset="UTF-8" action="/users" autocomplete="off" method="POST">
+pub async fn new_user<'r>(flash: Option<FlashMessage<'r>>) -> HtmlResponse {
+    let mut html_string = String::from(USER_HTML_PREFIX);
+    if flash.is_some() {
+        html_string.push_str(format!("<div>{}</div>", flash.unwrap().message()).as_ref())
+    }
+    html_string.push_str(
+        r#"<form accept-charset="UTF-8" action="/users" autocomplete="off" method="POST">
     <div>
         <label for="username">Username:</label>
         <input name="username" type="text"/>
@@ -74,30 +76,41 @@ pub async fn new_user(mut _db: Connection<DBConnection>) -> HtmlResponse {
     </div>
     <button type="submit" value="Submit">Submit</button>
 </form>"#,
-            USER_HTML_SUFFIX,
-        ]
-        .join(""),
-    ))
+    );
+    html_string.push_str(USER_HTML_SUFFIX);
+    Ok(RawHtml(html_string))
 }
 
 #[post(
     "/users",
     format = "application/x-www-form-urlencoded",
-    data = "<new_user>"
+    data = "<user_context>",
+    rank = 1
 )]
 pub async fn create_user<'r>(
     db: Connection<DBConnection>,
-    new_user: Form<NewUser<'r>>,
-) -> HtmlResponse {
-    println!("------------------------------------- {:?}", new_user);
-    Ok(RawHtml(
-        [
-            USER_HTML_PREFIX.to_string(),
-            format!("{:?}", new_user),
-            USER_HTML_SUFFIX.to_string(),
-        ]
-        .join(""),
-    ))
+    user_context: Form<Contextual<'r, NewUser<'r>>>,
+) -> RedirectResponse {
+    match user_context.value {
+        Some(ref new_user) => Ok(RawHtml(
+            [
+                USER_HTML_PREFIX.to_string(),
+                format!("{:?}", new_user),
+                USER_HTML_SUFFIX.to_string(),
+            ]
+            .join(""),
+        )),
+        None => {
+            let mut error_message = String::new();
+            user_context
+                .context
+                .errors()
+                .filter(|err| err.name.is_some())
+                .for_each(|err| error_message.push_str(err.value.as_ref().map()));
+            println!("---------------------------------------{}", error_message);
+            Err(Flash::error(Redirect::to("/users/new"), error_message))
+        }
+    }
 }
 
 #[get("/users/edit/<_uuid>", format = "text/html")]

@@ -2,11 +2,13 @@ use super::our_date_time::OurDateTime;
 use super::pagination::Pagination;
 use super::user_status::UserStatus;
 use crate::fairings::db::DBConnection;
-use rocket::form::FromForm;
+use regex::Regex;
+use rocket::form::{self, Error as FormError, FromForm};
 use rocket_db_pools::sqlx::FromRow;
 use rocket_db_pools::Connection;
 use std::error::Error;
 use uuid::Uuid;
+use zxcvbn::zxcvbn;
 
 #[derive(Debug, FromRow, FromForm)]
 pub struct User {
@@ -73,12 +75,32 @@ impl User {
 
 #[derive(Debug, FromForm)]
 pub struct NewUser<'r> {
+    #[field(validate = len(1..))]
     pub username: &'r str,
+    #[field(validate = validate_email())]
     pub email: &'r str,
+    #[field(validate = validate_password())]
     pub password: &'r str,
     #[field(validate = eq(self.password))]
     #[field(validate = omits("no"))]
     pub password_confirmation: &'r str,
     #[field(default = "Hello, I'm still figuring out my bio...")]
     pub description: Option<&'r str>,
+}
+
+fn validate_email<'v>(email: &'v str) -> form::Result<'v, ()> {
+    const EMAIL_REGEX: &str = r#"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"#;
+    let email_regex = Regex::new(EMAIL_REGEX).unwrap();
+    if !email_regex.is_match(email) {
+        Err(FormError::validation("invalid email"))?
+    }
+    Ok(())
+}
+
+pub fn validate_password<'v>(password: &'v str) -> form::Result<'v, ()> {
+    let entropy = zxcvbn(password, &[]);
+    if entropy.is_err() || entropy.unwrap().score() < 3 {
+        Err(FormError::validation("weak password"))?
+    }
+    Ok(())
 }
