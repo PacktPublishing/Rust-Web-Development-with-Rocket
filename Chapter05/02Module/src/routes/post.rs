@@ -23,16 +23,16 @@ pub async fn get_posts(
 }
 
 #[post("/users/<_user_uuid>/posts", format = "text/html", data = "<_upload>")]
-pub async fn create_post<'r>(
+pub async fn create_post(
     mut _db: Connection<DBConnection>,
     _user_uuid: &str,
-    _upload: Form<Post<'r>>,
+    _upload: Form<Post<'_>>,
 ) -> HtmlResponse {
     todo!("will implement later")
 }
 
 #[delete("/users/<_user_uuid>/posts/<_uuid>", format = "text/html")]
-pub async fn delete_post<'r>(
+pub async fn delete_post(
     mut _db: Connection<DBConnection>,
     _user_uuid: &str,
     _uuid: &str,

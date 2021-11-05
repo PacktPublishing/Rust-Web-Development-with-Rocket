@@ -29,7 +29,7 @@ impl<'r> FromFormField<'r> for OurDateTime {
 
 #[derive(FromForm)]
 struct Pagination {
-    cursor: OurDateTime,
+    next: OurDateTime,
     limit: usize,
 }
 
@@ -45,8 +45,8 @@ struct User {
     _uuid: Uuid,
     username: String,
     email: String,
-    password_hash: Vec<u8>,
-    description: String,
+    password_hash: String,
+    description: Option<String>,
     status: UserStatus,
     created_at: OurDateTime,
     updated_at: OurDateTime,

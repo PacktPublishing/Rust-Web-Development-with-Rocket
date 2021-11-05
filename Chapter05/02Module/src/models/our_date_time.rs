@@ -1,8 +1,7 @@
 use chrono::{offset::Utc, DateTime};
 use rocket::form::{self, DataField, FromFormField, ValueField};
-use rocket_db_pools::sqlx::FromRow;
 
-#[derive(Debug, FromRow)]
+#[derive(Debug)]
 pub struct OurDateTime(DateTime<Utc>);
 #[rocket::async_trait]
 impl<'r> FromFormField<'r> for OurDateTime {
