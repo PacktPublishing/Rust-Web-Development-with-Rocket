@@ -1,0 +1,9 @@
+[default]
+
+[debug]
+
+[debug.databases.main_connection]
+log_level = "normal"
+url = "postgres://username:password@localhost/rocket"
+
+[release]

@@ -7,3 +7,4 @@ main
 *.pdb
 .DS_Store
 .envrc
+*.log
