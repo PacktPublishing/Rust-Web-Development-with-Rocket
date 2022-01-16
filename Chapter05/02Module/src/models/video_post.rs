@@ -1,9 +1,9 @@
 use super::post::Post;
 use crate::traits::DisplayPostContent;
 
-pub struct VideoPost<'r>(Post<'r>);
+pub struct VideoPost(Post);
 
-impl<'r> DisplayPostContent for VideoPost<'r> {
+impl DisplayPostContent for VideoPost {
     fn raw_html() -> String {
         todo!("will implement later")
     }

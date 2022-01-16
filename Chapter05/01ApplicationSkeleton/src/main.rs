@@ -3,7 +3,7 @@ extern crate rocket;
 
 use chrono::{offset::Utc, DateTime};
 use rocket::form::{self, DataField, Form, FromForm, FromFormField, ValueField};
-use rocket::fs::{NamedFile, TempFile};
+use rocket::fs::{NamedFile};
 use rocket::http::Status;
 use rocket::request::Request;
 use rocket::response::content::RawHtml;
@@ -61,34 +61,33 @@ enum PostType {
 }
 
 #[derive(FromForm)]
-struct Post<'r> {
-    _uuid: Uuid,
-    _user_uuid: Uuid,
+struct Post {
+    uuid: Uuid,
+    user_uuid: Uuid,
     post_type: PostType,
     content: String,
-    upload_data: TempFile<'r>,
 }
 
 trait DisplayPostContent {
     fn raw_html() -> String;
 }
 
-struct TextPost<'r>(Post<'r>);
-impl<'r> DisplayPostContent for TextPost<'r> {
+struct TextPost(Post);
+impl DisplayPostContent for TextPost {
     fn raw_html() -> String {
         todo!("will implement later")
     }
 }
 
-struct PhotoPost<'r>(Post<'r>);
-impl<'r> DisplayPostContent for PhotoPost<'r> {
+struct PhotoPost(Post);
+impl DisplayPostContent for PhotoPost {
     fn raw_html() -> String {
         todo!("will implement later")
     }
 }
 
-struct VideoPost<'r>(Post<'r>);
-impl<'r> DisplayPostContent for VideoPost<'r> {
+struct VideoPost(Post);
+impl DisplayPostContent for VideoPost {
     fn raw_html() -> String {
         todo!("will implement later")
     }
@@ -166,16 +165,16 @@ async fn get_posts(mut _db: Connection<DBConnection>, _user_uuid: &str) -> HtmlR
 }
 
 #[post("/users/<_user_uuid>/posts", format = "text/html", data = "<_upload>")]
-async fn create_post<'r>(
+async fn create_post(
     mut _db: Connection<DBConnection>,
     _user_uuid: &str,
-    _upload: Form<Post<'r>>,
+    _upload: Form<Post>,
 ) -> HtmlResponse {
     todo!("will implement later")
 }
 
 #[post("/users/<_user_uuid>/posts/<_uuid>", format = "text/html")]
-async fn delete_post<'r>(
+async fn delete_post(
     mut _db: Connection<DBConnection>,
     _user_uuid: &str,
     _uuid: &str,
