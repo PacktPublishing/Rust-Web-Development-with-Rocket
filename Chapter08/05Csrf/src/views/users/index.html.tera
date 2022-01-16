@@ -9,7 +9,7 @@
     </div>
   {% endfor %}
   {% if pagination %}
-    <a href="/users?pagination.next={{pagination.next}}&pagination.limit={{pagination.limit}}" class="button">
+    <a href="/users?pagination.next={{ pagination.next }}&pagination.limit={{ pagination.limit }}" class="button">
       Next
     </a>
   {% endif %}

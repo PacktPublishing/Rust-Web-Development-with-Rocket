@@ -26,7 +26,7 @@ pub async fn get_posts(
 pub async fn create_post(
     mut _db: Connection<DBConnection>,
     _user_uuid: &str,
-    _upload: Form<Post<'_>>,
+    _upload: Form<Post>,
 ) -> HtmlResponse {
     todo!("will implement later")
 }
