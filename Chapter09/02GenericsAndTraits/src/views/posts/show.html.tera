@@ -1,0 +1,6 @@
+{% extends "template" %}
+{% block body %}
+  {% include "posts/_post" %}
+  <button type="submit" value="Submit" form="deletePost">Delete</button>
+  <a href="/users/{{user.uuid}}/posts" class="button">Post List</a>
+{% endblock %}
