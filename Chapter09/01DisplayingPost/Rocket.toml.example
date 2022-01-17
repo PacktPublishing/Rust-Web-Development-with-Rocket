@@ -1,0 +1,10 @@
+[default]
+log_level = "normal"
+template_dir = "src/views"
+
+[debug]
+
+[debug.databases.main_connection]
+url = "postgres://username:password@localhost/rocket"
+
+[release]
