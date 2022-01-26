@@ -1,0 +1,63 @@
+{% extends "template" %}
+{% block body %}
+  <form accept-charset="UTF-8" action="{{ form_url }}" autocomplete="off" method="POST">
+    <input type="hidden" name="authenticity_token" value="{{ csrf_token }}"/>
+    <fieldset>
+      <legend>{{ legend }}</legend>
+      {% if edit %}
+        <input type="hidden" name="_METHOD" value="PUT" />
+      {% endif %}
+      <div class="row">
+        <div class="col-sm-12 col-md-3">
+          <label for="username">Username:</label>
+        </div>
+        <div class="col-sm-12 col-md">
+          <input name="username" type="text" {% if user %}value="{{ user.username }}"{% endif %} />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-3">
+          <label for="email">Email:</label>
+        </div>
+        <div class="col-sm-12 col-md">
+          <input name="email" type="email" {% if user %}value="{{ user.email }}"{% endif %} />
+        </div>
+      </div>
+      {% if edit %}
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="old_password">Old password:</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input name="old_password" type="password" />
+          </div>
+        </div>
+      {% endif %}
+      <div class="row">
+        <div class="col-sm-12 col-md-3">
+          <label for="password">{% if edit %}New Password:{% else %}Password:{% endif %}</label>
+        </div>
+        <div class="col-sm-12 col-md">
+          <input name="password" type="password" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-3">
+          <label for="password_confirmation">Password Confirmation:</label>
+        </div>
+        <div class="col-sm-12 col-md">
+          <input name="password_confirmation" type="password" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-3">
+          <label for="description">Tell us a little bit more about yourself:</label>
+        </div>
+        <div class="col-sm-12 col-md">
+          <textarea name="description">{% if user %}{{ user.description }}{% endif %}</textarea>
+        </div>
+      </div>
+      <button type="submit" value="Submit">Submit</button>
+    </fieldset>
+  </form>
+{% endblock %}

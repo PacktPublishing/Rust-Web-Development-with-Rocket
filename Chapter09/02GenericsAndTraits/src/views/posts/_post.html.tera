@@ -1,0 +1,3 @@
+<div class="card fluid">
+  {{ post.post_html | safe }}
+</div>
