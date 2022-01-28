@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <title>Our Application User</title>
   <link href="/assets/mini-default.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
