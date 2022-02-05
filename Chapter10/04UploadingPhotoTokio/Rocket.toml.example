@@ -1,0 +1,12 @@
+[default]
+limits = {"file/avif" = "1Mib", "file/gif" = "1Mib", "file/jpg" = "1Mib", "file/jpeg" = "1Mib", "file/png" = "1Mib", "file/svg" = "1Mib", "file/webp" = "1Mib"}
+log_level = "normal"
+temp_dir = "/tmp"
+template_dir = "src/views"
+
+[debug]
+
+[debug.databases.main_connection]
+url = "postgres://username:password@localhost/rocket"
+
+[release]
