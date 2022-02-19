@@ -160,7 +160,7 @@ RETURNING *"#;
                 .map_err(|_| "cannot read password hash")?;
             let argon2 = Argon2::default();
             argon2
-                .verify_password(user.password.as_bytes(), &old_password_hash)
+                .verify_password(user.old_password.as_bytes(), &old_password_hash)
                 .map_err(|_| "cannot confirm old password")?;
             let salt = SaltString::generate(&mut OsRng);
             let new_hash = argon2

@@ -172,7 +172,7 @@ RETURNING *"#;
             })?;
             let argon2 = Argon2::default();
             argon2
-                .verify_password(user.password.as_bytes(), &old_password_hash)
+                .verify_password(user.old_password.as_bytes(), &old_password_hash)
                 .map_err(|e| {
                     OurError::new_internal_server_error(
                         String::from("Cannot confirm old password"),
