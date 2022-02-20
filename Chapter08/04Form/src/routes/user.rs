@@ -114,7 +114,7 @@ pub async fn edit_user(
         .map(|fl| format!("{}", fl.message()))
         .unwrap_or_else(|| "".to_string());
     let context = context! {
-        form_url: format!("/users/{}",&user.uuid ),
+        form_url: format!("/users/{}", &user.uuid),
         edit: true,
         legend: "Edit User",
         flash: flash_string,
