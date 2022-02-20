@@ -89,12 +89,12 @@ impl User {
         let connection = db.acquire().await.map_err(OurError::from_sqlx_error)?;
         let users = sqlx::query_as::<_, Self>(query_str)
             .bind(&pagination.next)
-            .bind(DEFAULT_LIMIT as i32)
+            .bind(pagination.limit as i32)
             .fetch_all(connection)
             .await
             .map_err(OurError::from_sqlx_error)?;
         let mut new_pagination: Option<Pagination> = None;
-        if users.len() == DEFAULT_LIMIT {
+        if users.len() == pagination.limit {
             let query_str = "SELECT EXISTS(SELECT 1 FROM users WHERE created_at < $1 ORDER BY created_at DESC LIMIT 1)";
             let connection = db.acquire().await.map_err(OurError::from_sqlx_error)?;
             let exists = sqlx::query_as::<_, BoolWrapper>(query_str)
@@ -105,7 +105,7 @@ impl User {
             if exists.0 {
                 new_pagination = Some(Pagination {
                     next: users.last().unwrap().created_at.to_owned(),
-                    limit: DEFAULT_LIMIT,
+                    limit: pagination.limit,
                 });
             }
         }
