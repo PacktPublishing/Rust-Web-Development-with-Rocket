@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-sm-3"><mark>UUID:</mark></div>
+  <div class="col-sm-9"> {{ user.uuid }}</div>
+</div>
+<div class="row">
+  <div class="col-sm-3"><mark>Username:</mark></div>
+  <div class="col-sm-9"> {{ user.username }}</div>
+</div>
+<div class="row">
+  <div class="col-sm-3"><mark>Email:</mark></div>
+  <div class="col-sm-9"> {{ user.email }}</div>
+</div>
+<div class="row">
+  <div class="col-sm-3"><mark>Description:</mark></div>
+  <div class="col-sm-9"> {{ user.description }}</div>
+</div>
+<div class="row">
+  <div class="col-sm-3"><mark>Status:</mark></div>
+  <div class="col-sm-9"> {{ user.status }}</div>
+</div>
+<div class="row">
+  <div class="col-sm-3"><mark>Created At:</mark></div>
+  <div class="col-sm-9"> {{ user.created_at }}</div>
+</div>
+<div class="row">
+  <div class="col-sm-3"><mark>Updated At:</mark></div>
+  <div class="col-sm-9"> {{ user.updated_at }}</div>
+</div>

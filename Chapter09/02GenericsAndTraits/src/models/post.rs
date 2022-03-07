@@ -116,12 +116,12 @@ LIMIT $3"#;
         let posts = sqlx::query_as::<_, Self>(query_str)
             .bind(&parsed_uuid)
             .bind(&pagination.next)
-            .bind(DEFAULT_LIMIT as i32)
+            .bind(pagination.limit as i32)
             .fetch_all(connection)
             .await
             .map_err(OurError::from_sqlx_error)?;
         let mut new_pagination: Option<Pagination> = None;
-        if posts.len() == DEFAULT_LIMIT {
+        if posts.len() == pagination.limit {
             let query_str = "SELECT EXISTS(SELECT 1 FROM posts WHERE created_at < $1 ORDER BY created_at DESC LIMIT 1)";
             let connection = db.acquire().await.map_err(OurError::from_sqlx_error)?;
             let exists = sqlx::query_as::<_, BoolWrapper>(query_str)
@@ -132,7 +132,7 @@ LIMIT $3"#;
             if exists.0 {
                 new_pagination = Some(Pagination {
                     next: posts.last().unwrap().created_at.to_owned(),
-                    limit: DEFAULT_LIMIT,
+                    limit: pagination.limit,
                 });
             }
         }

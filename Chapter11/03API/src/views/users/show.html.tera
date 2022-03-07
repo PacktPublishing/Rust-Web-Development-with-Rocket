@@ -1,0 +1,11 @@
+{% extends "template" %}
+{% block body %}
+  {% include "users/_user" %}
+  <a href="/users/{{user.uuid}}/posts" class="button">User Posts</a>
+  {% if current_user and current_user.user.uuid == user.uuid %}
+    <a href="/users/edit/{{user.uuid}}" class="button">Edit User</a>
+    <form accept-charset="UTF-8" action="/users/delete/{{user.uuid}}" autocomplete="off" method="POST" id="deleteUser" class="hidden"></form>
+    <button type="submit" value="Submit" form="deleteUser">Delete</button>
+  {% endif %}
+  <a href="/users" class="button">User List</a>
+{% endblock body %}

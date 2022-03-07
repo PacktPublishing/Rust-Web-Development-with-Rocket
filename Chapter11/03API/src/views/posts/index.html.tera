@@ -1,0 +1,33 @@
+{% extends "template" %}
+{% block body %}
+  {% for post in posts %}
+    <div class="container">
+      <div><mark class="tag">{{ loop.index }}</mark></div>
+      {% include "posts/_post" %}
+      <a href="/users/{{ user.uuid }}/posts/{{ post.uuid }}" class="button">See Post</a>
+    </div>
+  {% endfor %}
+  {% if pagination %}
+    <a href="/users/{{ user.uuid }}/posts?pagination.next={{ pagination.next }}&pagination.limit={{ pagination.limit }}" class="button">
+      Next
+    </a>
+  {% endif %}
+  {% if current_user %}
+    <form action="/users/{{ user.uuid }}/posts" enctype="multipart/form-data" method="POST">
+      <input type="hidden" name="authenticity_token" value="{{ csrf_token }}"/>
+      <fieldset>
+        <legend>New Post</legend>
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <label for="upload">Upload file:</label>
+          </div>
+          <div class="col-sm-12 col-md">
+            <input type="file" name="file" accept="text/plain,image/*,video/*">
+          </div>
+        </div>
+        <button type="submit" value="Submit">Submit</button>
+      </fieldset>
+    </form>
+  {% endif %}
+
+{% endblock %}

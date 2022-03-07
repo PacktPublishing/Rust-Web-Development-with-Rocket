@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Our Application User</title>
+  <link href="/assets/mini-default.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <header>
+    <a href="/" class="button">Home</a>
+    {% if current_user %}
+      <form accept-charset="UTF-8" action="/logout" autocomplete="off" method="POST" id="logout" class="hidden"></form>
+      <button type="submit" value="Submit" form="logout">Logout</button>
+    {% else %}
+      <a href="/login" class="button">Login</a>
+      <a href="/users/new" class="button">Signup</a>
+    {% endif %}
+  </header>
+  <div class="container">
+    {% if flash %}
+      <div class="toast" onclick="this.remove()">
+        {{ flash | safe }}
+      </div>
+    {% endif %}
+    {% block body %}{% endblock body %}
+  </div>
+</body>
+
+</html>
