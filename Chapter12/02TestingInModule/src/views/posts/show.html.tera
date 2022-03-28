@@ -1,0 +1,10 @@
+{% extends "template" %}
+{% block body %}
+  {% include "posts/_post" %}
+    {% if current_user and current_user.user.uuid == user.uuid %}
+      <form accept-charset="UTF-8" action="/users/{{user.uuid}}/posts/delete/{{post.uuid}}" autocomplete="off" method="POST" id="deletePost" class="hidden"></form>
+      <button type="submit" value="Submit" form="deletePost">Delete</button>
+    {% endif %}
+
+  <a href="/users/{{user.uuid}}/posts" class="button">Post List</a>
+{% endblock %}
