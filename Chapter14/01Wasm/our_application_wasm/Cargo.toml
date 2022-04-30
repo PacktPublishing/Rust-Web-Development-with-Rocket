@@ -1,0 +1,13 @@
+[package]
+edition = "2021"
+name = "our_application_wasm"
+version = "0.1.0"
+
+[dependencies]
+chrono = {version = "0.4", features = ["serde"]}
+gloo-utils = "0.1.3"
+reqwasm = "0.2"
+serde = {version = "1.0.130", features = ["derive"]}
+uuid = {version = "0.8.2", features = ["v4", "serde"]}
+wasm-bindgen-futures = "0.4"
+yew = "0.19"

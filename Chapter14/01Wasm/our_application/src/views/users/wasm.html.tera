@@ -1,0 +1,11 @@
+{% extends "template" %}
+{% block wasm %}
+<link rel="preload" href="/assets/index-9eb0724334955a2a_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
+<link rel="modulepreload" href="/assets/index-9eb0724334955a2a.js">
+{% endblock wasm %}
+{% block body %}
+<div id="main_container"></div>
+{% endblock body %}
+{% block wasmscript %}
+<script type="module">import init from '/assets/index-9eb0724334955a2a.js';init('/assets/index-9eb0724334955a2a_bg.wasm');</script>
+{% endblock wasmscript %}
