@@ -1,0 +1,8 @@
+[package]
+edition = "2021"
+name = "warp_app"
+version = "0.1.0"
+
+[dependencies]
+tokio = {version = "1", features = ["full"]}
+warp = "0.3"
