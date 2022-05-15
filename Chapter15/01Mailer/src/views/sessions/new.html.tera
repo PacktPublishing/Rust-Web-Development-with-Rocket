@@ -1,0 +1,26 @@
+{% extends "template" %}
+{% block body %}
+  <form accept-charset="UTF-8" action="login" autocomplete="off" method="POST">
+    <input type="hidden" name="authenticity_token" value="{{ csrf_token }}"/>
+    <fieldset>
+      <legend>Login</legend>
+      <div class="row">
+        <div class="col-sm-12 col-md-3">
+          <label for="username">Username:</label>
+        </div>
+        <div class="col-sm-12 col-md">
+          <input name="username" type="text" value="" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-3">
+          <label for="password">Password:</label>
+        </div>
+        <div class="col-sm-12 col-md">
+          <input name="password" type="password" />
+        </div>
+      </div>
+      <button type="submit" value="Submit">Submit</button>
+    </fieldset>
+  </form>
+{% endblock %}
