@@ -5,6 +5,7 @@ version = "0.1.0"
 
 [dependencies]
 chrono = {version = "0.4", features = ["serde"]}
+getrandom = {version = "0.2", features = ["js"]}
 gloo-utils = "0.1.3"
 reqwasm = "0.2"
 serde = {version = "1.0.130", features = ["derive"]}
