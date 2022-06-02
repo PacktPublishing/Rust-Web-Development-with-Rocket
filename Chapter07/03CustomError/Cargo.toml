@@ -17,8 +17,8 @@ argon2 = {version = "0.3", features = ["std"]}
 chrono = "0.4"
 rand_core = {version = "0.6", features = ["std"]}
 regex = "1.5.4"
-rocket = {path = "../../../rocket/core/lib/", features = ["uuid"]}
-rocket_db_pools = {path = "../../../rocket/contrib/db_pools/lib/", features = ["sqlx_postgres"]}
-sqlx = {version = "0.5.9", features = ["postgres", "uuid", "runtime-tokio-rustls", "chrono"]}
+rocket = {git = "https://github.com/SergioBenitez/Rocket", rev = "6bdd2f8", features = ["uuid"]}
+rocket_db_pools = {git = "https://github.com/SergioBenitez/Rocket", rev = "6bdd2f8", features = ["sqlx_postgres"]}
+sqlx = {version = "0.5", features = ["postgres", "uuid", "runtime-tokio-rustls", "chrono"]}
 uuid = {version = "0.8.2", features = ["v4"]}
 zxcvbn = "2"
