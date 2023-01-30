@@ -58,6 +58,8 @@ We also provide a PDF file that has color images of the screenshots/diagrams use
 * Rust Web Programming [[Packt]](https://www.packtpub.com/product/rust-web-programming/9781800560819?utm_source=github&utm_medium=repository&utm_campaign=9781800560819) [[Amazon]](https://www.amazon.com/dp/1800560818)
 
 * Game Development with Rust and WebAssembly [[Packt]](https://www.packtpub.com/product/game-development-with-rust-and-webassembly/9781801070973?utm_source=github&utm_medium=repository&utm_campaign=9781801070973) [[Amazon]](https://www.amazon.com/dp/1801070970)
+## Errata 
+ * Page 30 (Code snippet 1):  **use our_package::cipher::{rot13, rsa, Cipher}** should be added to the top of main.rs file
 
 ## Get to Know the Author
 **Karuna Murti**
